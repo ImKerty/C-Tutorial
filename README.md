@@ -20,9 +20,22 @@ Questa repository offre una guida essenziale alla sintassi e alle funzionalità 
   - [Array (Vettori)](#array-vettori)
   - [Stringhe](#stringhe)
   - [Strutture (Struct)](#strutture-struct)
-- [Programmazione a Oggetti (OOP)](#programmazione-a-oggetti-oop)
-  - [Classi e Oggetti](#classi-e-oggetti)
-  - [Costruttori](#costruttori)
+- [Strutture Dati Lineari](#strutture-dati-lineari)
+  - [Array vs Liste: Concetti Base](#array-vs-liste-concetti-base)
+    - [Array (Abbiamo già visto)](#array-abbiamo-già-visto)
+  - [Il Concetto di Lista](#il-concetto-di-lista)
+    - [Implementare una Lista con Array e Indicatore](#implementare-una-lista-con-array-e-indicatore)
+  - [Operazioni Base su una Lista](#operazioni-base-su-una-lista)
+    - [1. Verificare se è Vuota](#1-verificare-se-è-vuota)
+    - [2. Verificare se è Piena](#2-verificare-se-è-piena)
+    - [3. Aggiungere un Elemento (PUSH / Accodare)](#3-aggiungere-un-elemento-push--accodare)
+    - [4. Accedere a un Elemento](#4-accedere-a-un-elemento)
+    - [5. Rimuovere un Elemento](#5-rimuovere-un-elemento)
+  - [Differenza: Inserimento vs Accodamento](#differenza-inserimento-vs-accodamento)
+    - [Accodamento (semplice, O(1))](#accodamento-semplice-o1)
+    - [Inserimento in Posizione (complesso, O(n))](#inserimento-in-posizione-complesso-on)
+  - [Il Concetto di Coda (Queue)](#il-concetto-di-coda-queue)
+    - [Implementazione base di una Coda](#implementazione-base-di-una-coda)
 - [Concetti Avanzati - Gestione Dati](#concetti-avanzati---gestione-dati)
   - [Validazione dell'Input](#validazione-dellinput)
     - [Perché validare?](#perché-validare)
@@ -40,25 +53,10 @@ Questa repository offre una guida essenziale alla sintassi e alle funzionalità 
     - [Calcolare la Media](#calcolare-la-media)
   - [Confronto tra Collezioni](#confronto-tra-collezioni)
   - [Verifica dello Stato della Lista](#verifica-dello-stato-della-lista)
-- [Strutture Dati Lineari](#strutture-dati-lineari)
-  - [Array vs Liste: Concetti Base](#array-vs-liste-concetti-base)
-    - [Array (Abbiamo già visto)](#array-abbiamo-già-visto)
-  - [Il Concetto di Lista](#il-concetto-di-lista)
-    - [Implementare una Lista con Array e Indicatore](#implementare-una-lista-con-array-e-indicatore)
-  - [Operazioni Base su una Lista](#operazioni-base-su-una-lista)
-    - [1. Verificare se è Vuota](#1-verificare-se-è-vuota)
-    - [2. Verificare se è Piena](#2-verificare-se-è-piena)
-    - [3. Aggiungere un Elemento (PUSH / Accodare)](#3-aggiungere-un-elemento-push--accodare)
-    - [4. Accedere a un Elemento](#4-accedere-a-un-elemento)
-    - [5. Rimuovere un Elemento](#5-rimuovere-un-elemento)
-  - [Differenza: Inserimento vs Accodamento](#differenza-inserimento-vs-accodamento)
-    - [Accodamento (semplice, O(1))](#accodamento-semplice-o1)
-    - [Inserimento in Posizione (complesso, O(n))](#inserimento-in-posizione-complesso-on)
-  - [Il Concetto di Coda (Queue)](#il-concetto-di-coda-queue)
-    - [Implementazione base di una Coda](#implementazione-base-di-una-coda)
-- [Concetti Avanzati - Gestione Dati](#concetti-avanzati---gestione-dati-1)
-  - [Validazione dell'Input](#validazione-dellinput-1)
-      
+- [Programmazione a Oggetti (OOP)](#programmazione-a-oggetti-oop)
+  - [Classi e Oggetti](#classi-e-oggetti)
+  - [Costruttori](#costruttori)
+
 ---
 
 # Basi del Linguaggio
@@ -309,323 +307,6 @@ int main() {
     return 0;
 }
 ```
-
----
-
-# Programmazione a Oggetti (OOP)
-
-## Classi e Oggetti
-
-Una classe è un modello per creare oggetti.
-
-```cpp
-#include <iostream>
-using namespace std;
-
-class Auto {
-public:
-    string marca;
-    string modello;
-    int anno;
-    
-    void mostraInfo() {
-        cout << marca << " " << modello << " (" << anno << ")" << endl;
-    }
-};
-
-int main() {
-    Auto auto1;
-    auto1.marca = "Ferrari";
-    auto1.modello = "F8";
-    auto1.anno = 2023;
-    
-    auto1.mostraInfo();
-    
-    return 0;
-}
-```
-
-## Costruttori
-
-Inizializzano gli oggetti automaticamente.
-
-```cpp
-#include <iostream>
-using namespace std;
-
-class Conto {
-private:
-    double saldo;
-    
-public:
-    Conto(double iniziale) {
-        saldo = iniziale;
-    }
-    
-    void deposita(double importo) {
-        saldo += importo;
-    }
-    
-    double leggiSaldo() {
-        return saldo;
-    }
-};
-
-int main() {
-    Conto conto1(1000);
-    conto1.deposita(500);
-    cout << "Saldo: " << conto1.leggiSaldo() << endl;
-    
-    return 0;
-}
-```
-
----
-
-# Concetti Avanzati - Gestione Dati
-
-## Validazione dell'Input
-
-### Perché validare?
-
-La validazione è fondamentale per evitare errori e comportamenti inaspettati. Quando un utente inserisce dati, potrebbe sbagliare: per questo controlliamo che il valore rientri in un intervallo accettabile.
-
-```cpp
-void leggiIntero(int &valore, string messaggio, int min, int max) {
-    cout << messaggio;
-    cin >> valore;
-    while(valore < min || valore > max) {  // Controlla se è fuori range
-        cout << "*** Errore. Inserire un numero compreso fra " << min << " e " << max << endl;
-        cout << messaggio;
-        cin >> valore;
-    }
-}
-```
-
-**Ragionamento:**
-- Il ciclo `while` rimane attivo finché il valore è errato
-- Dopo ogni tentativo fallito, richiediamo l'input
-- Questo garantisce che procediamo solo con dati validi
-
-## Gestione delle Stringhe Non Vuote
-
-Simile alla validazione numerica, ma per le stringhe:
-
-```cpp
-void leggiStringa(string &valore, string messaggio) {
-    cout << messaggio;
-    getline(cin, valore);  // Legge l'intera riga (inclusi spazi)
-    while(valore.size() == 0) {  // Controlla se è vuota
-        cout << "*** Errore. Inserire una stringa non vuota" << endl;
-        cout << messaggio;
-        getline(cin, valore);
-    }
-}
-```
-
-**Perché `getline()` invece di `cin >>`?**
-- `cin >>` si ferma al primo spazio
-- `getline()` legge l'intera riga
-- Perfetto per nomi e cognomi con spazi
-
-## Strutture Dati come Contenitori
-
-### Il Concetto di Indicatore
-
-```cpp
-struct lista {
-    int indicatore;           // Tiene traccia di quanti elementi abbiamo
-    studente studenti[MAX_DIM];  // Array di studenti
-};
-```
-
-**Ragionamento:**
-- L'array ha una dimensione fissa (MAX_DIM = 100)
-- L'`indicatore` ci dice quanti elementi sono **effettivamente** usati
-- Se abbiamo 3 studenti, indicatore = 3, anche se l'array può contenerne 100
-
-**Vantaggi:**
-- Risparmiamo memoria (non usiamo spazi inutili)
-- Sappiamo dove finiscono i dati validi
-- Possiamo controllare se è piena o vuota
-
-## Operazioni sulla Lista
-
-### Aggiungere in Coda
-
-```cpp
-void aggiungiInCoda(lista &studenti, studente studente) {
-    studenti.studenti[studenti.indicatore] = studente;  // Metti in posizione libera
-    studenti.indicatore++;  // Incrementa il contatore
-}
-```
-
-**Ragionamento:**
-- Inseriamo nella posizione indicata da `indicatore`
-- Poi lo incrementiamo per la prossima inserzione
-- È efficiente: O(1), tempo costante
-
-### Rimuovere in Posizione
-
-```cpp
-void rimuoviInPosizione(lista &studenti, int pos) {
-    for (int i = pos; i < studenti.indicatore - 1; i++) {
-        studenti.studenti[i] = studenti.studenti[i+1];  // Sposta elementi
-    }
-    studenti.indicatore--;  // Diminuisci il contatore
-}
-```
-
-**Ragionamento:**
-- Quando rimuoviamo, creiamo un buco
-- Spostiamo tutti gli elementi successivi una posizione indietro
-- Infine, decrementiamo l'indicatore
-
-**Esempio:**
-```
-Prima:  [A, B, C, D] indicatore=4
-Tolgo C (pos=2):
-        [A, B, D, D] (sposta D)
-        [A, B, D]    (decrementa indicatore=3)
-```
-
-## Filtraggio e Ricerca
-
-### Cercare Studenti Ammessi
-
-```cpp
-lista cercaStudentiAmmessi(lista studenti) {
-    lista ammessi;
-    ammessi.indicatore = 0;
-    for (int i = 0; i < studenti.indicatore; i++) {
-        studente studente = studenti.studenti[i];
-        if (studente.voto >= VOTO_AMMESSO) {  // Condizione di filtro
-            aggiungiInCoda(ammessi, studente);  // Aggiungi se soddisfa
-        }
-    }
-    return ammessi;
-}
-```
-
-**Ragionamento:**
-- Creiamo una **nuova lista vuota** per i risultati
-- Iteriamo su tutti gli elementi
-- Se soddisfano la condizione, li aggiungiamo alla nuova lista
-- Restituiamo una lista filtrata
-
-**Vantaggi:**
-- La lista originale non viene modificata
-- Possiamo riusare questa funzione per altri filtri
-- È un modello di programmazione riutilizzabile
-
-### Ricerca per Nome (String Matching)
-
-```cpp
-lista ricercaPerNome(lista studenti, string nome) {
-    lista ricerca;
-    ricerca.indicatore = 0;
-    for(int i = 0; i < studenti.indicatore; i++) {
-        if (studenti.studenti[i].nome.find(nome) != -1) {  // Cerca substring
-            aggiungiInCoda(ricerca, studenti.studenti[i]);
-        }
-    }
-    return ricerca;
-}
-```
-
-**Cosa significa `find()`?**
-- Cerca una sottostringa all'interno di una stringa
-- Restituisce la posizione se trovata
-- Restituisce `-1` (in realtà `string::npos`) se non trovata
-
-**Esempio:**
-```
-nome cercato: "Mar"
-studente.nome: "Marco Rossi"
-"Marco Rossi".find("Mar") → 0 (trovato all'inizio)
-"Marco Rossi".find("xyz") → -1 (non trovato)
-```
-
-## Calcolo di Statistiche
-
-### Trovare il Valore Massimo
-
-```cpp
-int trovaVotoMax(lista studenti) {
-    int votoMax = studenti.studenti[0].voto;  // Inizia dal primo
-    for (int i = 1; i < studenti.indicatore; i++) {
-        if (studenti.studenti[i].voto > votoMax) {  // Confronta
-            votoMax = studenti.studenti[i].voto;     // Aggiorna
-        }
-    }
-    return votoMax;
-}
-```
-
-**Ragionamento:**
-- Partiamo dal primo elemento come "massimo provvisorio"
-- Iteriamo dal secondo elemento
-- Se ne troviamo uno più grande, lo aggiorniamo
-- Questo è più efficiente che cercare ogni volta
-
-### Calcolare la Media
-
-```cpp
-float calcolaMedia(lista stud) {
-    float sommaVoti = 0;
-    for(int i = 0; i < stud.indicatore; i++) {
-        sommaVoti += stud.studenti[i].voto;  // Accumula
-    }
-    return sommaVoti / stud.indicatore;  // Dividi per la quantità
-}
-```
-
-**Ragionamento:**
-- Accumuliamo tutti i voti in una variabile
-- Dividiamo per il numero di elementi
-- Usiamo `float` per preservare i decimali
-
-## Confronto tra Collezioni
-
-Il programma confronta due coorti usando la stessa logica:
-
-```cpp
-// Confronta voti massimi
-int maxStudenti = trovaVotoMax(studenti);
-int maxNuovaCoorte = trovaVotoMax(nuovaCoorte);
-
-if (maxStudenti > maxNuovaCoorte) {
-    // Prima coorte vince
-} else if (maxStudenti < maxNuovaCoorte) {
-    // Seconda coorte vince
-} else {
-    // Pareggio
-}
-```
-
-**Perché riusare le funzioni?**
-- Meno codice duplicato
-- Meno errori
-- Più facile da mantenere
-
-## Verifica dello Stato della Lista
-
-```cpp
-bool listaPiena(lista studenti) {
-    return studenti.indicatore == MAX_DIM;
-}
-
-bool listaVuota(lista studenti) {
-    return studenti.indicatore == 0;
-}
-```
-
-**Ragionamento:**
-- Prima di operazioni critiche, verifichiamo lo stato
-- Se la lista è piena, non possiamo aggiungere
-- Se è vuota, non possiamo cercare
-
-Queste funzioni rendono il codice **leggibile** e **sicuro**.
 
 ---
 
@@ -896,4 +577,318 @@ int dequeue(lista &coda) {
 # Concetti Avanzati - Gestione Dati
 
 ## Validazione dell'Input
-// ...existing code...
+
+### Perché validare?
+
+La validazione è fondamentale per evitare errori e comportamenti inaspettati. Quando un utente inserisce dati, potrebbe sbagliare: per questo controlliamo che il valore rientri in un intervallo accettabile.
+
+```cpp
+void leggiIntero(int &valore, string messaggio, int min, int max) {
+    cout << messaggio;
+    cin >> valore;
+    while(valore < min || valore > max) {  // Controlla se è fuori range
+        cout << "*** Errore. Inserire un numero compreso fra " << min << " e " << max << endl;
+        cout << messaggio;
+        cin >> valore;
+    }
+}
+```
+
+**Ragionamento:**
+- Il ciclo `while` rimane attivo finché il valore è errato
+- Dopo ogni tentativo fallito, richiediamo l'input
+- Questo garantisce che procediamo solo con dati validi
+
+## Gestione delle Stringhe Non Vuote
+
+Simile alla validazione numerica, ma per le stringhe:
+
+```cpp
+void leggiStringa(string &valore, string messaggio) {
+    cout << messaggio;
+    getline(cin, valore);  // Legge l'intera riga (inclusi spazi)
+    while(valore.size() == 0) {  // Controlla se è vuota
+        cout << "*** Errore. Inserire una stringa non vuota" << endl;
+        cout << messaggio;
+        getline(cin, valore);
+    }
+}
+```
+
+**Perché `getline()` invece di `cin >>`?**
+- `cin >>` si ferma al primo spazio
+- `getline()` legge l'intera riga
+- Perfetto per nomi e cognomi con spazi
+
+## Strutture Dati come Contenitori
+
+### Il Concetto di Indicatore
+
+```cpp
+struct lista {
+    int indicatore;           // Tiene traccia di quanti elementi abbiamo
+    studente studenti[MAX_DIM];  // Array di studenti
+};
+```
+
+**Ragionamento:**
+- L'array ha una dimensione fissa (MAX_DIM = 100)
+- L'`indicatore` ci dice quanti elementi sono **effettivamente** usati
+- Se abbiamo 3 studenti, indicatore = 3, anche se l'array può contenerne 100
+
+**Vantaggi:**
+- Risparmiamo memoria (non usiamo spazi inutili)
+- Sappiamo dove finiscono i dati validi
+- Possiamo controllare se è piena o vuota
+
+## Operazioni sulla Lista
+
+### Aggiungere in Coda
+
+```cpp
+void aggiungiInCoda(lista &studenti, studente studente) {
+    studenti.studenti[studenti.indicatore] = studente;  // Metti in posizione libera
+    studenti.indicatore++;  // Incrementa il contatore
+}
+```
+
+**Ragionamento:**
+- Inseriamo nella posizione indicata da `indicatore`
+- Poi lo incrementiamo per la prossima inserzione
+- È efficiente: O(1), tempo costante
+
+### Rimuovere in Posizione
+
+```cpp
+void rimuoviInPosizione(lista &studenti, int pos) {
+    for (int i = pos; i < studenti.indicatore - 1; i++) {
+        studenti.studenti[i] = studenti.studenti[i+1];  // Sposta elementi
+    }
+    studenti.indicatore--;  // Diminuisci il contatore
+}
+```
+
+**Ragionamento:**
+- Quando rimuoviamo, creiamo un buco
+- Spostiamo tutti gli elementi successivi una posizione indietro
+- Infine, decrementiamo l'indicatore
+
+**Esempio:**
+```
+Prima:  [A, B, C, D] indicatore=4
+Tolgo C (pos=2):
+        [A, B, D, D] (sposta D)
+        [A, B, D]    (decrementa indicatore=3)
+```
+
+## Filtraggio e Ricerca
+
+### Cercare Studenti Ammessi
+
+```cpp
+lista cercaStudentiAmmessi(lista studenti) {
+    lista ammessi;
+    ammessi.indicatore = 0;
+    for (int i = 0; i < studenti.indicatore; i++) {
+        studente studente = studenti.studenti[i];
+        if (studente.voto >= VOTO_AMMESSO) {  // Condizione di filtro
+            aggiungiInCoda(ammessi, studente);  // Aggiungi se soddisfa
+        }
+    }
+    return ammessi;
+}
+```
+
+**Ragionamento:**
+- Creiamo una **nuova lista vuota** per i risultati
+- Iteriamo su tutti gli elementi
+- Se soddisfano la condizione, li aggiungiamo alla nuova lista
+- Restituiamo una lista filtrata
+
+**Vantaggi:**
+- La lista originale non viene modificata
+- Possiamo riusare questa funzione per altri filtri
+- È un modello di programmazione riutilizzabile
+
+### Ricerca per Nome (String Matching)
+
+```cpp
+lista ricercaPerNome(lista studenti, string nome) {
+    lista ricerca;
+    ricerca.indicatore = 0;
+    for(int i = 0; i < studenti.indicatore; i++) {
+        if (studenti.studenti[i].nome.find(nome) != -1) {  // Cerca substring
+            aggiungiInCoda(ricerca, studenti.studenti[i]);
+        }
+    }
+    return ricerca;
+}
+```
+
+**Cosa significa `find()`?**
+- Cerca una sottostringa all'interno di una stringa
+- Restituisce la posizione se trovata
+- Restituisce `-1` (in realtà `string::npos`) se non trovata
+
+**Esempio:**
+```
+nome cercato: "Mar"
+studente.nome: "Marco Rossi"
+"Marco Rossi".find("Mar") → 0 (trovato all'inizio)
+"Marco Rossi".find("xyz") → -1 (non trovato)
+```
+
+## Calcolo di Statistiche
+
+### Trovare il Valore Massimo
+
+```cpp
+int trovaVotoMax(lista studenti) {
+    int votoMax = studenti.studenti[0].voto;  // Inizia dal primo
+    for (int i = 1; i < studenti.indicatore; i++) {
+        if (studenti.studenti[i].voto > votoMax) {  // Confronta
+            votoMax = studenti.studenti[i].voto;     // Aggiorna
+        }
+    }
+    return votoMax;
+}
+```
+
+**Ragionamento:**
+- Partiamo dal primo elemento come "massimo provvisorio"
+- Iteriamo dal secondo elemento
+- Se ne troviamo uno più grande, lo aggiorniamo
+- Questo è più efficiente che cercare ogni volta
+
+### Calcolare la Media
+
+```cpp
+float calcolaMedia(lista stud) {
+    float sommaVoti = 0;
+    for(int i = 0; i < stud.indicatore; i++) {
+        sommaVoti += stud.studenti[i].voto;  // Accumula
+    }
+    return sommaVoti / stud.indicatore;  // Dividi per la quantità
+}
+```
+
+**Ragionamento:**
+- Accumuliamo tutti i voti in una variabile
+- Dividiamo per il numero di elementi
+- Usiamo `float` per preservare i decimali
+
+## Confronto tra Collezioni
+
+Il programma confronta due coorti usando la stessa logica:
+
+```cpp
+// Confronta voti massimi
+int maxStudenti = trovaVotoMax(studenti);
+int maxNuovaCoorte = trovaVotoMax(nuovaCoorte);
+
+if (maxStudenti > maxNuovaCoorte) {
+    // Prima coorte vince
+} else if (maxStudenti < maxNuovaCoorte) {
+    // Seconda coorte vince
+} else {
+    // Pareggio
+}
+```
+
+**Perché riusare le funzioni?**
+- Meno codice duplicato
+- Meno errori
+- Più facile da mantenere
+
+## Verifica dello Stato della Lista
+
+```cpp
+bool listaPiena(lista studenti) {
+    return studenti.indicatore == MAX_DIM;
+}
+
+bool listaVuota(lista studenti) {
+    return studenti.indicatore == 0;
+}
+```
+
+**Ragionamento:**
+- Prima di operazioni critiche, verifichiamo lo stato
+- Se la lista è piena, non possiamo aggiungere
+- Se è vuota, non possiamo cercare
+
+Queste funzioni rendono il codice **leggibile** e **sicuro**.
+
+---
+
+# Programmazione a Oggetti (OOP)
+
+## Classi e Oggetti
+
+Una classe è un modello per creare oggetti.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Auto {
+public:
+    string marca;
+    string modello;
+    int anno;
+    
+    void mostraInfo() {
+        cout << marca << " " << modello << " (" << anno << ")" << endl;
+    }
+};
+
+int main() {
+    Auto auto1;
+    auto1.marca = "Ferrari";
+    auto1.modello = "F8";
+    auto1.anno = 2023;
+    
+    auto1.mostraInfo();
+    
+    return 0;
+}
+```
+
+## Costruttori
+
+Inizializzano gli oggetti automaticamente.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Conto {
+private:
+    double saldo;
+    
+public:
+    Conto(double iniziale) {
+        saldo = iniziale;
+    }
+    
+    void deposita(double importo) {
+        saldo += importo;
+    }
+    
+    double leggiSaldo() {
+        return saldo;
+    }
+};
+
+int main() {
+    Conto conto1(1000);
+    conto1.deposita(500);
+    cout << "Saldo: " << conto1.leggiSaldo() << endl;
+    
+    return 0;
+}
+```
+
+---
+
+**Ultimo aggiornamento:** 29 gennaio 2026
