@@ -40,6 +40,24 @@ Questa repository offre una guida essenziale alla sintassi e alle funzionalità 
     - [Calcolare la Media](#calcolare-la-media)
   - [Confronto tra Collezioni](#confronto-tra-collezioni)
   - [Verifica dello Stato della Lista](#verifica-dello-stato-della-lista)
+- [Strutture Dati Lineari](#strutture-dati-lineari)
+  - [Array vs Liste: Concetti Base](#array-vs-liste-concetti-base)
+    - [Array (Abbiamo già visto)](#array-abbiamo-già-visto)
+  - [Il Concetto di Lista](#il-concetto-di-lista)
+    - [Implementare una Lista con Array e Indicatore](#implementare-una-lista-con-array-e-indicatore)
+  - [Operazioni Base su una Lista](#operazioni-base-su-una-lista)
+    - [1. Verificare se è Vuota](#1-verificare-se-è-vuota)
+    - [2. Verificare se è Piena](#2-verificare-se-è-piena)
+    - [3. Aggiungere un Elemento (PUSH / Accodare)](#3-aggiungere-un-elemento-push--accodare)
+    - [4. Accedere a un Elemento](#4-accedere-a-un-elemento)
+    - [5. Rimuovere un Elemento](#5-rimuovere-un-elemento)
+  - [Differenza: Inserimento vs Accodamento](#differenza-inserimento-vs-accodamento)
+    - [Accodamento (semplice, O(1))](#accodamento-semplice-o1)
+    - [Inserimento in Posizione (complesso, O(n))](#inserimento-in-posizione-complesso-on)
+  - [Il Concetto di Coda (Queue)](#il-concetto-di-coda-queue)
+    - [Implementazione base di una Coda](#implementazione-base-di-una-coda)
+- [Concetti Avanzati - Gestione Dati](#concetti-avanzati---gestione-dati-1)
+  - [Validazione dell'Input](#validazione-dellinput-1)
       
 ---
 
@@ -611,4 +629,271 @@ Queste funzioni rendono il codice **leggibile** e **sicuro**.
 
 ---
 
-**Ultimo aggiornamento:** 29 gennaio 2026
+# Strutture Dati Lineari
+
+## Array vs Liste: Concetti Base
+
+### Array (Abbiamo già visto)
+
+Un array è una sequenza di elementi di **dimensione fissa**.
+
+```cpp
+int numeri[5] = {10, 20, 30, 40, 50};
+// Una volta creato, non può crescere oltre 5 elementi
+```
+
+**Limitazioni:**
+- Dimensione fissa e immutabile
+- Se ne usiamo solo 3 su 5, sprechiamo memoria
+- Non possiamo dire al compilatore "mi serviranno 3 elementi"
+
+## Il Concetto di Lista
+
+Una **lista** è una collezione di elementi dove:
+- Possiamo aggiungere elementi dinamicamente
+- Possiamo rimuovere elementi
+- Non abbiamo una dimensione prefissata (teoricamente)
+
+### Implementare una Lista con Array e Indicatore
+
+Per simulare una lista in C++ (senza librerie avanzate), usiamo:
+1. Un array di dimensione massima
+2. Un **indicatore** che conta quanti elementi usiamo realmente
+
+```cpp
+struct lista {
+    int indicatore;              // Quanti elementi abbiamo REALMENTE
+    int elementi[MAX_DIM];       // Array con spazio massimo
+};
+```
+
+**Esempio visuale:**
+
+```
+MAX_DIM = 5
+
+Lista vuota:
+indicatore = 0
+[_, _, _, _, _]
+ ↑
+ nessun elemento
+
+Aggiungiamo 3 elementi (10, 20, 30):
+indicatore = 3
+[10, 20, 30, _, _]
+           ↑
+           prossima posizione libera
+```
+
+## Operazioni Base su una Lista
+
+### 1. Verificare se è Vuota
+
+```cpp
+bool listaVuota(lista l) {
+    return l.indicatore == 0;
+}
+```
+
+Se l'indicatore è 0, non abbiamo elementi.
+
+### 2. Verificare se è Piena
+
+```cpp
+bool listaPiena(lista l) {
+    return l.indicatore == MAX_DIM;
+}
+```
+
+Se l'indicatore raggiunge MAX_DIM, non possiamo aggiungere più elementi.
+
+### 3. Aggiungere un Elemento (PUSH / Accodare)
+
+```cpp
+void aggiungiInCoda(lista &l, int valore) {
+    if (listaPiena(l)) {
+        cout << "Lista piena!" << endl;
+        return;
+    }
+    l.elementi[l.indicatore] = valore;  // Metti nella posizione libera
+    l.indicatore++;                      // Incrementa il contatore
+}
+```
+
+**Passaggio per passo:**
+
+```
+Prima:
+indicatore = 2
+[10, 20, _, _, _]
+
+Aggiungiamo 30:
+l.elementi[2] = 30;   // [10, 20, 30, _, _]
+l.indicatore++;       // indicatore = 3
+
+Dopo:
+indicatore = 3
+[10, 20, 30, _, _]
+```
+
+### 4. Accedere a un Elemento
+
+```cpp
+int elemento = lista.elementi[posizione];
+```
+
+**Importante:** Devi sapere che la posizione esiste!
+
+```cpp
+// Sicuro
+for (int i = 0; i < lista.indicatore; i++) {
+    cout << lista.elementi[i] << endl;
+}
+
+// PERICOLOSO! Potrebbe accedere oltre gli elementi veri
+for (int i = 0; i < MAX_DIM; i++) {
+    cout << lista.elementi[i] << endl;
+}
+```
+
+### 5. Rimuovere un Elemento
+
+Quando rimuoviamo, dobbiamo **compattare** la lista:
+
+```cpp
+void rimuoviInPosizione(lista &l, int pos) {
+    // Controlla che la posizione sia valida
+    if (pos < 0 || pos >= l.indicatore) {
+        cout << "Posizione non valida!" << endl;
+        return;
+    }
+    
+    // Sposta tutti gli elementi dopo 'pos' una posizione indietro
+    for (int i = pos; i < l.indicatore - 1; i++) {
+        l.elementi[i] = l.elementi[i + 1];
+    }
+    
+    l.indicatore--;  // Decrementa il contatore
+}
+```
+
+**Esempio visuale:**
+
+```
+Prima: [10, 20, 30, 40, _]  indicatore = 4
+Rimuoviamo posizione 1 (20):
+
+Passo 1: Sposta elementi
+for i = 1 a 2:
+  elementi[1] = elementi[2]  → [10, 30, 30, 40, _]
+  elementi[2] = elementi[3]  → [10, 30, 40, 40, _]
+
+Passo 2: Decrementa indicatore
+indicatore = 3
+
+Dopo: [10, 30, 40, 40, _]  indicatore = 3
+      ↑   ↑   ↑   (elementi ignorati)
+      
+Notiamo che l'elemento alla posizione 3 rimane 40,
+ma non lo consideriamo perché indicatore = 3
+```
+
+## Differenza: Inserimento vs Accodamento
+
+### Accodamento (semplice, O(1))
+
+Aggiungere **sempre in fondo**:
+
+```cpp
+void aggiungiInCoda(lista &l, int valore) {
+    l.elementi[l.indicatore] = valore;
+    l.indicatore++;
+}
+```
+
+**Vantaggio:** Velocissimo, costa sempre lo stesso tempo.
+
+### Inserimento in Posizione (complesso, O(n))
+
+Aggiungere **in una posizione specifica**:
+
+```cpp
+void inserisciInPosizione(lista &l, int pos, int valore) {
+    if (listaPiena(l) || pos < 0 || pos > l.indicatore) {
+        cout << "Errore!" << endl;
+        return;
+    }
+    
+    // Sposta elementi VERSO LA FINE per fare spazio
+    for (int i = l.indicatore; i > pos; i--) {
+        l.elementi[i] = l.elementi[i - 1];
+    }
+    
+    l.elementi[pos] = valore;
+    l.indicatore++;
+}
+```
+
+**Esempio:**
+
+```
+Prima: [10, 20, 40, _]  indicatore = 3
+Inserisci 30 in posizione 2:
+
+Sposta elementi all'indietro (da destra a sinistra):
+i = 3: elementi[3] = elementi[2]  → [10, 20, 40, 40]
+i = 2: (stop, questo è dove inseriremo)
+
+Inserisci:
+elementi[2] = 30  → [10, 20, 30, 40]
+indicatore = 4
+
+Dopo: [10, 20, 30, 40]  indicatore = 4
+```
+
+## Il Concetto di Coda (Queue)
+
+Una **coda** è un tipo speciale di lista dove:
+- Aggiungi **sempre in fondo** (PUSH/Enqueue)
+- Togli **sempre dall'inizio** (POP/Dequeue)
+- Principio: **FIFO** (First In First Out)
+
+```
+Esempio di coda al supermercato:
+
+Persona A arriva prima
+Persona B arriva dopo
+Persona C arriva per ultimo
+
+Coda: [A, B, C]
+
+A viene servito per primo (è entrato per primo)
+Coda: [B, C]
+
+Poi B, poi C
+```
+
+### Implementazione base di una Coda
+
+```cpp
+void enqueue(lista &coda, int valore) {
+    aggiungiInCoda(coda, valore);  // Aggiungi in fondo
+}
+
+int dequeue(lista &coda) {
+    if (listaVuota(coda)) {
+        cout << "Coda vuota!" << endl;
+        return -1;
+    }
+    int valore = coda.elementi[0];
+    rimuoviInPosizione(coda, 0);  // Togli dall'inizio
+    return valore;
+}
+```
+
+---
+
+# Concetti Avanzati - Gestione Dati
+
+## Validazione dell'Input
+// ...existing code...
