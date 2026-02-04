@@ -22,7 +22,7 @@ Questa repository offre una guida essenziale alla sintassi e alle funzionalità 
   - [Strutture (Struct)](#strutture-struct)
 - [Strutture Dati Lineari](#strutture-dati-lineari)
   - [Array vs Liste: Concetti Base](#array-vs-liste-concetti-base)
-    - [Array (Abbiamo già visto)](#array-abbiamo-già-visto)
+    - [Array](#array-abbiamo-già-visto)
   - [Il Concetto di Lista](#il-concetto-di-lista)
     - [Implementare una Lista con Array e Indicatore](#implementare-una-lista-con-array-e-indicatore)
   - [Operazioni Base su una Lista](#operazioni-base-su-una-lista)
@@ -311,7 +311,7 @@ int main() {
 
 ## Array vs Liste: Concetti Base
 
-### Array (Abbiamo già visto)
+### Array
 
 Un array è una sequenza di elementi di **dimensione fissa**.
 
