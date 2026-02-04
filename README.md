@@ -820,4 +820,4 @@ Queste funzioni rendono il codice **leggibile** e **sicuro**.
 
 ---
 
-**Ultimo aggiornamento:** 29 gennaio 2026
+**Ultimo aggiornamento:** 4 Febbraio 2026
