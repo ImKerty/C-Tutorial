@@ -1,6 +1,6 @@
 # C++ Tutorial Completo
 
-Questa repository offre una guida essenziale alla sintassi e alle funzionalità del linguaggio C++, partendo dalle basi fino alla programmazione a oggetti.
+Questa repository offre una guida essenziale alla sintassi e alle funzionalità del linguaggio C++, partendo dalle basi
 
 ## Indice
 - [C++ Tutorial Completo](#c-tutorial-completo)
